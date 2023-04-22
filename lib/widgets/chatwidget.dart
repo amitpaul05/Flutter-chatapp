@@ -7,7 +7,9 @@ import '../models/messege_models.dart';
 class chatWidget extends StatelessWidget {
   const chatWidget({Key? key}) : super(key: key);
 
-  @override
+
+
+    @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.only(
@@ -15,13 +17,27 @@ class chatWidget extends StatelessWidget {
       child: ListView.builder(
         itemBuilder: (context, index) {
           final message chat = chats[index];
+          Route _createRoute() {
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  chatScreen(User: chat.sender),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end);
+                final offsetAnimation = animation.drive(tween);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                );
+              },
+            );
+          }
+
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => chatScreen(User: chat.sender),
-                  ));
+              Navigator.of(context).push(_createRoute());
             },
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8, right: 8),

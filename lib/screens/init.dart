@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:animate_navigator_transition_do/animate_navigator_transition_do.dart';
 import 'package:chatapp/screens/homeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +16,26 @@ class _initpageState extends State<initpage> {
   void initState() {
 
     super.initState();
+    Route _createRoute() {
+      return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            homescreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          final tween = Tween(begin: begin, end: end);
+          final offsetAnimation = animation.drive(tween);
 
-    Timer(Duration(seconds: 4), () {
-      AnimateNavigationTrasitionDo(
-          context: context, //BuildContext
-          childPage: homescreen(), // Page to go
-          animation: AnimationType.slideBottom);
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      );
+    }
+
+    Timer(Duration(seconds: 2), () {
+      Navigator.of(context).pushReplacement(_createRoute());
     });
 
   }

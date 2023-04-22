@@ -32,14 +32,26 @@ class favorite extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: favorites.length,
                 itemBuilder: (BuildContext context, int index) {
+                  Route _createRoute() {
+                    return PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          chatScreen(User: favorites[index]),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(0.0, 1.0);
+                        const end = Offset.zero;
+                        final tween = Tween(begin: begin, end: end);
+                        final offsetAnimation = animation.drive(tween);
+
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      },
+                    );
+                  }
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                chatScreen(User: favorites[index]),
-                          ));
+                      Navigator.of(context).push(_createRoute());
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
