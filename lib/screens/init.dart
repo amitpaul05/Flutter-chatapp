@@ -4,7 +4,6 @@ import 'package:animate_navigator_transition_do/animate_navigator_transition_do.
 import 'package:chatapp/screens/homeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:animate_navigator_transition_do/animate_navigator_transition_do.dart';
 
 class initpage extends StatefulWidget {
   const initpage({Key? key}) : super(key: key);
